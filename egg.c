@@ -11,7 +11,7 @@ egg *lay_egg(void){
     return e;
 }
 
-void destroy_egg(egg *e){
+void cook_egg(egg *e){
     free(e);
 }
 
