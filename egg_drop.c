@@ -40,6 +40,20 @@ int eggs_left(carton* my_eggs){
     return goodEggs;
 }
 
+/* frees the malloc'd space in a carton of eggs including the carton.
+ * @Param my_eggs -- carton of eggs to be free'd
+ * @Return -- void
+ */
+void free_carton(carton* my_eggs){
+    if( ! my_eggs ){
+        return;
+    }
+    for( int count = 0; count < (int)my_eggs->size; count ++){
+        cook_egg(my_eggs->eggs[count]);
+    }
+    free( my_eggs);
+}
+
 /*TODO
  *
  */
