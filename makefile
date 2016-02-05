@@ -8,7 +8,7 @@ OBJS1=egg.o
 
 .PHONY: clean debug profile 
 
-$(TARGET): $(OBJS1)
+$(TARGET): $(OBJS1) -lm
 
 debug: CFLAGS+=-g
 debug: $(TARGET)
