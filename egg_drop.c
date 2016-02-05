@@ -28,6 +28,25 @@ void binary_search (egg_holder* my_egg ){
     }
     my_egg->floor_max = drop_from;
 }
+
+/* Function searches for the point an egg breaks by traversing the range one step at a time
+ * @Param -- egg holder containing the egg to be dropped
+ * @Return -- void
+ */
+void single_search (egg_holder* my_egg ){
+    if ( ! my_egg ){
+        return;
+    }
+    
+    egg_drop_from_floor(my_egg->egg, my_egg->floor_min);
+    my_egg->drops++;
+    if (! egg_is_broken(my_egg->egg)){
+        my_egg->floor_min++;
+        single_search(my_egg);
+    }
+    my_egg->floor_max = my_egg->floor_min;
+}
+
 /*TODO
  *
  */
