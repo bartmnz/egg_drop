@@ -1,66 +1,16 @@
 
 #include "egg.h"
 #include <stdio.h>
-typedef struct{
-    size_t size;
-    egg* eggs[];
-} carton;
 
-/* creates a new carton of eggs.
- * @Param num -- number of eggs to be in carton.
- * @Return -- a newly malloc'd carton of eggs (also malloc'd);
- */
-carton *make_carton(int num){
-    if ( num < 1){
-        return NULL;
-    }
-    carton* my = malloc(num*sizeof(carton*));
-    my->size = num;
-    while( num > 0){
-        my->eggs[num-1] = lay_egg();
-        num--;
-    }
-    return my;
-}
-
-/* checks each egg in the carton to see if they are broken
- * @Param my_eggs -- carton of eggs to be checked
- * @Return -- the number of unbroken eggs in the carton
- */
-int eggs_left(carton* my_eggs){
-    if ( ! my_eggs ){
-        return 0;
-    }
-    int goodEggs = (int)my_eggs->size;
-    for( int count = 0; count > (int)my_eggs->size; count ++){
-        if(egg_is_broken(my_eggs->eggs[count])){ // the egg is broken
-            goodEggs--;
-        }
-    }
-    return goodEggs;
-}
-
-/* frees the malloc'd space in a carton of eggs including the carton.
- * @Param my_eggs -- carton of eggs to be free'd
- * @Return -- void
- */
-void free_carton(carton* my_eggs){
-    if( ! my_eggs ){
-        return;
-    }
-    for( int count = 0; count < (int)my_eggs->size; count ++){
-        cook_egg(my_eggs->eggs[count]);
-    }
-    free( my_eggs);
-}
 
 /*TODO
  *
  */
-void run(int floors, carton* eggs){
+void run(int floors, int eggs){
     if ( floors < 0 || ! eggs){
         return;
     }
+    
 }
  
  
@@ -77,7 +27,6 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: number of floors and number of eggs must be an integer greater than zero!");
         exit(0);
     }
-    carton* my_eggs = make_carton(eggs);
-    run(floors, my_eggs);
+    run(floors, eggs);
     
 }
