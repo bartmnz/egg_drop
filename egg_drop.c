@@ -2,7 +2,32 @@
 #include "egg.h"
 #include <stdio.h>
 
+typedef struct{
+    int drops;
+    size_t floor_max;
+    size_t floor_min;
+    egg* egg;
+}egg_holder;
 
+
+/* Function searches for the point an egg breaks using binary search
+ * @Param -- egg holder containing the egg to be dropped
+ * @Return -- void
+ */
+void binary_search (egg_holder* my_egg ){
+    if ( ! my_egg ){
+        return;
+    } 
+    size_t drop_from = (my_egg->floor_min + (my_egg->floor_max - my_egg->floor_min)) / 2;
+    egg_drop_from_floor(my_egg->egg, drop_from);
+    my_egg->drops++;
+    
+    if (! egg_is_broken(my_egg->egg)){
+        my_egg->floor_min = drop_from + 1;
+        binary_search(my_egg);
+    }
+    my_egg->floor_max = drop_from;
+}
 /*TODO
  *
  */
