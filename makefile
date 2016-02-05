@@ -15,7 +15,7 @@ debug: $(TARGET)
 
 
 clean:
-	-$(RM) $(TARGET1) $(OBJS1) 
+	-$(RM) $(TARGET) $(OBJS1) 
 
 profile: CFLAGS+=-pg
 profile: LDFLAGS+=-pg
