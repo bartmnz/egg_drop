@@ -23,6 +23,23 @@ carton *make_carton(int num){
     return my;
 }
 
+/* checks each egg in the carton to see if they are broken
+ * @Param my_eggs -- carton of eggs to be checked
+ * @Return -- the number of unbroken eggs in the carton
+ */
+int eggs_left(carton* my_eggs){
+    if ( ! my_eggs ){
+        return 0;
+    }
+    int goodEggs = (int)my_eggs->size;
+    for( int count = 0; count > (int)my_eggs->size; count ++){
+        if(egg_is_broken(my_eggs->eggs[count])){ // the egg is broken
+            goodEggs--;
+        }
+    }
+    return goodEggs;
+}
+
 /*TODO
  *
  */
