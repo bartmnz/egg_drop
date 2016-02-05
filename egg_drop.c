@@ -19,7 +19,12 @@ typedef struct{
 void binary_search (egg_holder* my_egg ){
     if ( ! my_egg ){
         return;
-    } 
+    }
+    if( my_egg->floor_min == my_egg->floor_max){
+        my_egg->floor_max--;
+        my_egg->floor_min--;
+        return;
+    }
     size_t drop_from = (my_egg->floor_min + (my_egg->floor_max - my_egg->floor_min) / 2);
     egg_drop_from_floor(my_egg->egg, drop_from);
     my_egg->drops++;
@@ -28,8 +33,10 @@ void binary_search (egg_holder* my_egg ){
     if (! egg_is_broken(my_egg->egg)){
         my_egg->floor_min = drop_from + 1;
         binary_search(my_egg);
+    }else{
+        printf("broke drop_from(%zu)\n ", drop_from);
+        my_egg->floor_max = drop_from;
     }
-    my_egg->floor_max = drop_from +1;
 }
 
 /* Function searches for the point an egg breaks by traversing the range one step at a time
@@ -40,7 +47,9 @@ void single_search (egg_holder* my_egg ){
     if ( ! my_egg ){
         return;
     }
-    
+    if( my_egg->floor_min == my_egg->floor_max){
+        return;
+    }
     egg_drop_from_floor(my_egg->egg, my_egg->floor_min);
     my_egg->drops++;
     printf("drops (%d) min (%zu) max (%zu) drop_from (%zu)\n", my_egg->drops, my_egg->floor_min, my_egg->floor_max, my_egg->floor_min);
@@ -59,7 +68,9 @@ void search_two (egg_holder* my_egg){
     if( ! my_egg ){
         return;
     }
-    
+    if( my_egg->floor_min == my_egg->floor_max){
+        return;
+    }
     int floors = my_egg->floor_max - my_egg->floor_min;
     size_t step = (size_t) ((sqrt(1+(8*floors))-1)/2) + 1;
     size_t next_floor = my_egg->floor_min + step;
@@ -73,13 +84,14 @@ void search_two (egg_holder* my_egg){
            my_egg->floor_max = next_floor;
            break;
         }
-        my_egg->floor_min = next_floor;
+        my_egg->floor_min = next_floor +1;
         step = step - 1;
         next_floor += step;
     }
     if (! egg_is_broken(my_egg->egg)){
         search_two(my_egg); // run again on the remaining values
     }
+    
 }
 
 /* Function solves the "two egg problem" for given number of floors and eggs 
