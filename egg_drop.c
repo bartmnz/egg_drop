@@ -2,6 +2,7 @@
 #include "egg.h"
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 typedef struct{
     int drops;
@@ -77,14 +78,47 @@ void search_two (egg_holder* my_egg){
     }
 }
 
-/*TODO
- *
+/* Function solves the "two egg problem" for given number of floors and eggs 
+ * using the fewest number of drops possible
+ * @Param floors -- number of floors in building must be > 0
+ * @Param eggs -- number of eggs to drop must be > 0
+ * @Return 1 on success 0 on failure
  */
-void run(int floors, int eggs){
-    if ( floors < 0 || ! eggs){
-        return;
+int run (int floors, int eggs){
+    if ( floors < 0 ){
+        fprintf(stderr, "ERROR: buildings can't have 0 floors\n");
+        return 0;
     }
-    
+    egg_holder* my_egg = malloc(sizeof(egg_holder*));
+    memset(my_egg, 0, sizeof(egg_holder));
+    if (! my_egg){
+        return 0;
+    }
+    my_egg->drops = 0;
+    my_egg->floor_max = floors;
+    my_egg->floor_min = 1;
+    while ( my_egg->floor_max != my_egg->floor_min && eggs){
+        my_egg->egg = lay_egg();
+        if ( ! my_egg->egg ){
+            fprintf( stderr, "ERROR: couldn't allocate space!!");
+        }
+        if ( eggs > 2){
+            binary_search( my_egg );
+        } else if ( eggs == 2){
+            search_two( my_egg );
+        } else {
+            single_search( my_egg );
+        }
+        cook_egg(my_egg->egg);
+        eggs--;
+        if ( my_egg->floor_max == 0 ){ // something bad happened
+            return 0;
+        }
+    }
+    fprintf(stdout, "Max safe Floor: %zu \n Number of Drops: %d \n", 
+            my_egg->floor_min, my_egg->drops);
+    free(my_egg);
+    return 1;
 }
  
  
