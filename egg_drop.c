@@ -1,6 +1,28 @@
 
 #include "egg.h"
 #include <stdio.h>
+typedef struct{
+    size_t size;
+    egg* eggs[];
+} carton;
+
+/* creates a new carton of eggs.
+ * @Param num -- number of eggs to be in carton.
+ * @Return -- a newly malloc'd carton of eggs (also malloc'd);
+ */
+carton *make_carton(int num){
+    if ( num < 1){
+        return NULL;
+    }
+    carton* my = malloc(num*sizeof(carton*));
+    my->size = num;
+    while( num > 0){
+        my->eggs[num-1] = lay_egg();
+        num--;
+    }
+    return my;
+}
+
 /*TODO
  *
  */
