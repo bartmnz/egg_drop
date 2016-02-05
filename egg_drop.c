@@ -26,8 +26,8 @@ carton *make_carton(int num){
 /*TODO
  *
  */
-void run(int floors, int eggs){
-    if ( floors < 0 || eggs < 0){
+void run(int floors, carton* eggs){
+    if ( floors < 0 || ! eggs){
         return;
     }
 }
@@ -46,6 +46,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: number of floors and number of eggs must be an integer greater than zero!");
         exit(0);
     }
-    run(floors, eggs);
+    carton* my_eggs = make_carton(eggs);
+    run(floors, my_eggs);
     
 }
