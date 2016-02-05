@@ -1,6 +1,7 @@
 
 #include "egg.h"
 #include <stdio.h>
+#include <math.h>
 
 typedef struct{
     int drops;
@@ -45,6 +46,35 @@ void single_search (egg_holder* my_egg ){
         single_search(my_egg);
     }
     my_egg->floor_max = my_egg->floor_min;
+}
+
+/* Function searches for the point an egg breaks using the quadratic algorithm
+ * @Param -- egg holder containing the egg to be dropped
+ * @Return -- void
+ */
+void search_two (egg_holder* my_egg){
+    if( ! my_egg ){
+        return;
+    }
+    
+    int floors = my_egg->floor_max - my_egg->floor_min;
+    size_t step = (size_t) ((sqrt(1+(8*floors))-1)/2) + 1;
+    size_t next_floor = my_egg->floor_min + step;
+    //if(step == 0) step = 1;
+    while (next_floor <= my_egg->floor_max){
+        egg_drop_from_floor(my_egg->egg, next_floor);
+        my_egg->drops++;
+        if (egg_is_broken(my_egg->egg)){
+           my_egg->floor_max = next_floor;
+           break;
+        }
+        my_egg->floor_min = next_floor;
+        step += step - 1;
+        next_floor += step;
+    }
+    if (! egg_is_broken(my_egg->egg)){
+        binary_search(my_egg); // can waist this egg to make it better
+    }
 }
 
 /*TODO
