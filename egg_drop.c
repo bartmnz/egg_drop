@@ -27,13 +27,11 @@ void binary_search (egg_holder* my_egg ){
     size_t drop_from = (my_egg->floor_min + (my_egg->floor_max - my_egg->floor_min) / 2);
     egg_drop_from_floor(my_egg->egg, drop_from);
     my_egg->drops++;
-    printf("drops (%d) min (%zu) max (%zu) drop_from (%zu)\n", my_egg->drops, my_egg->floor_min, my_egg->floor_max, drop_from);
     if (my_egg->drops > 20) exit(0);
     if (! egg_is_broken(my_egg->egg)){
         my_egg->floor_min = drop_from ;
         binary_search(my_egg);
     }else{
-        printf("broke drop_from(%zu)\n ", drop_from);
         my_egg->floor_max = drop_from;
     }
 }
@@ -51,7 +49,6 @@ void single_search (egg_holder* my_egg ){
     }
     egg_drop_from_floor(my_egg->egg, my_egg->floor_min);
     my_egg->drops++;
-    printf("drops (%d) min (%zu) max (%zu) drop_from (%zu)\n", my_egg->drops, my_egg->floor_min, my_egg->floor_max, my_egg->floor_min);
     if (! egg_is_broken(my_egg->egg)){
         my_egg->floor_min++;
         single_search(my_egg);
@@ -73,12 +70,10 @@ void search_two (egg_holder* my_egg){
     int floors = my_egg->floor_max - my_egg->floor_min;
     size_t step = (size_t) ((sqrt(1+(8*floors))-1)/2) + 1;
     size_t next_floor = my_egg->floor_min + step;
-    printf("number of floors (%d) step (%zu) \n", floors, step);
     //if(step == 0) step = 1;
     while (next_floor <= my_egg->floor_max){
         egg_drop_from_floor(my_egg->egg, next_floor);
         my_egg->drops++;
-        printf("drops (%d) min (%zu) max (%zu) drop_from (%zu)\n", my_egg->drops, my_egg->floor_min, my_egg->floor_max, next_floor);
         if (egg_is_broken(my_egg->egg)){
            my_egg->floor_max = next_floor;
            break;
@@ -120,13 +115,10 @@ int run (int floors, int eggs){
         }
         if ( eggs > 2){
             binary_search( my_egg );
-            printf("binary \n");
         } else if ( eggs == 2){
             search_two( my_egg );
-            printf("search tow \n");
         } else {
             single_search( my_egg );
-            printf("single \n");
         }
         cook_egg(my_egg->egg);
         eggs--;
@@ -151,7 +143,6 @@ int main(int argc, char *argv[]){
     }
     long floors = strtol(argv[1], NULL, 10);
     long eggs = strtol(argv[2], NULL, 10);
-    printf( "%ld, %ld\n", floors, eggs);
     if (!floors  || !eggs ){
         fprintf(stderr, "ERROR: number of floors and number of eggs must be an integer greater than zero!\n");
         exit(0);
