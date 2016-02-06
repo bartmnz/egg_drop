@@ -20,9 +20,8 @@ void binary_search (egg_holder* my_egg ){
     if ( ! my_egg ){
         return;
     }
-    if( my_egg->floor_min == my_egg->floor_max){
+    if( my_egg->floor_min+1 == my_egg->floor_max){
         my_egg->floor_max--;
-        my_egg->floor_min--;
         return;
     }
     size_t drop_from = (my_egg->floor_min + (my_egg->floor_max - my_egg->floor_min) / 2);
@@ -31,7 +30,7 @@ void binary_search (egg_holder* my_egg ){
     printf("drops (%d) min (%zu) max (%zu) drop_from (%zu)\n", my_egg->drops, my_egg->floor_min, my_egg->floor_max, drop_from);
     if (my_egg->drops > 20) exit(0);
     if (! egg_is_broken(my_egg->egg)){
-        my_egg->floor_min = drop_from + 1;
+        my_egg->floor_min = drop_from ;
         binary_search(my_egg);
     }else{
         printf("broke drop_from(%zu)\n ", drop_from);
